@@ -9,7 +9,12 @@ public class Parser {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new Parser().processFile("movie_metadata.csv");
+		if(args.length > 0) {
+			new Parser().processFile(args[0]);
+		} else {
+			new Parser().processFile("movie_metadata.csv");
+			
+		}
 	}
 	
 	public void processFile(String name) {
