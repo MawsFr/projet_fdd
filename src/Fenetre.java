@@ -121,14 +121,6 @@ public class Fenetre implements Observer {
 		gbc_chkPremiereLigne.gridy = 2;
 		panel.add(chkPremireLigne, gbc_chkPremiereLigne);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 3;
-		panel.add(scrollPane, gbc_scrollPane);
-		
 		JLabel lblNewLabel = new JLabel("APRES OUVERTURE DU FICHIER :");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();

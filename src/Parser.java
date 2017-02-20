@@ -63,7 +63,7 @@ public class Parser extends Observable {
 		
 		
 		for(int i=1;i<file.rowCount();i++) {
-			String genres = file.getCell(i, Constants.INPUT_GENRES_POSITION);
+			String genres = file.getCell(i, Constants.INPUT_GENRES_POSITION).trim();
 			System.out.println("Movie title : " + file.getCell(i, 11));
 			System.out.println("Movie genres : " + genres);
 			/*
@@ -85,8 +85,8 @@ public class Parser extends Observable {
 			
 			System.out.println("movie genres array size : " + movieGenres.size());
 		}		
-		for (Iterator iterator = movieGenres.iterator(); iterator.hasNext();) {
-			String string = (String) iterator.next();
+		for (Iterator<String> iterator = movieGenres.iterator(); iterator.hasNext();) {
+			String string = iterator.next().trim();
 			System.out.println(string);
 		}
 		
@@ -94,7 +94,7 @@ public class Parser extends Observable {
 	}
 	
 	/**
-	 * Je te laisse mettre cette fonction où ca te va, j'ai pas trop trop regardé la structure du projet pour etre honnête ^^"
+	 * Je te laisse mettre cette fonction oï¿½ ca te va, j'ai pas trop trop regardï¿½ la structure du projet pour etre honnï¿½te ^^"
 	 * En gros ce qu'elle fait c'est qu'elle lit le fichier, et pour chaque ligne, elle ajoute les movie genres pour le moement (tout en omettant de mettre l'ancienne valeur des genres ;)
 	 * @throws Exception 
 	 */
@@ -105,7 +105,7 @@ public class Parser extends Observable {
 		String[] entries = null;
 		
 		while((entries = reader.readNext()) != null) {
-			ArrayList<String> list = new ArrayList(Arrays.asList(entries));
+			ArrayList<String> list = new ArrayList<String>(Arrays.asList(entries));
 			//locally save temp data : 
 			String genres = entries[Constants.INPUT_GENRES_POSITION];
 			//Remove unused data :
