@@ -1,9 +1,17 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Set;
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 
 import extensions.CSVFile;
 
@@ -24,13 +32,19 @@ public class Parser extends Observable {
 		if(args.length > 0) {
 			new Parser().processFile(args[0]);
 		} else {
-			new Parser().processFile("movie_metadata.csv");
+			new Parser().processFile("movie_metadata");
 		}
 	}
 	
 	public void processFile(String name) {
 		//this.processStrings(name, ',');
-		this.createMovieGenres(name, ',');
+		try {
+			this.createMovieGenres(name, ',');
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("trololo");
+		}
 	}
 	
 	public void processStrings(String name, char separator) {
@@ -44,10 +58,12 @@ public class Parser extends Observable {
 		
 	}
 	
-	public void createMovieGenres(String name, char separator) {
-		CSVFile file = new CSVFile(name, separator);
+	public void createMovieGenres(String name, char separator) throws Exception {
+		CSVFile file = new CSVFile(name + ".csv", separator);
+		
+		
 		for(int i=1;i<file.rowCount();i++) {
-			String genres = file.getCell(i, 9);
+			String genres = file.getCell(i, Constants.INPUT_GENRES_POSITION);
 			System.out.println("Movie title : " + file.getCell(i, 11));
 			System.out.println("Movie genres : " + genres);
 			/*
@@ -63,12 +79,56 @@ public class Parser extends Observable {
 				else
 					System.out.println(parts[j] + " skipped");
 			}
+			
+			//Movie genre arrays created
+			//Time to create the movie genres columns in the file
+			
 			System.out.println("movie genres array size : " + movieGenres.size());
 		}		
 		for (Iterator iterator = movieGenres.iterator(); iterator.hasNext();) {
 			String string = (String) iterator.next();
 			System.out.println(string);
 		}
+		
+		recreate(name);
+	}
+	
+	/**
+	 * Je te laisse mettre cette fonction où ca te va, j'ai pas trop trop regardé la structure du projet pour etre honnête ^^"
+	 * En gros ce qu'elle fait c'est qu'elle lit le fichier, et pour chaque ligne, elle ajoute les movie genres pour le moement (tout en omettant de mettre l'ancienne valeur des genres ;)
+	 * @throws Exception 
+	 */
+	public void recreate(String name) throws Exception {
+		boolean header = true;
+		CSVReader reader = new CSVReader(new FileReader(name + ".csv"));
+		CSVWriter writer = new CSVWriter(new FileWriter(name + "_output.csv"), ',');
+		String[] entries = null;
+		
+		while((entries = reader.readNext()) != null) {
+			ArrayList<String> list = new ArrayList(Arrays.asList(entries));
+			//locally save temp data : 
+			String genres = entries[Constants.INPUT_GENRES_POSITION];
+			//Remove unused data :
+			list.remove(Constants.INPUT_GENRES_POSITION); //Remove movie genres
+			if(header) {
+				for(String genre : movieGenres) {
+					list.add(genre);
+				}
+				header = false;
+			} else {
+				for(String genre : movieGenres) {
+					if(genres.contains(genre)) {
+						list.add("true");
+					} else {
+						list.add("false");
+					}
+				}
+			}
+			String[] array = list.toArray(new String[0]);
+			writer.writeNext(array);
+		}
+		writer.close();
+		reader.close();
 	}
 	
 	
