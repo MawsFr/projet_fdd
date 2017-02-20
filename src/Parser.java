@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -63,6 +63,11 @@ public class Parser {
 			String string = (String) iterator.next();
 			System.out.println(string);
 		}
+	}
+	
+	
+	public void loadFile(File file, String delimiter, String headerDelimiter, boolean trim, String stringSurrounder, String emptyReplacer) {
+		
 	}
 
 }
