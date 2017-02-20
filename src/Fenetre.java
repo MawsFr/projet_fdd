@@ -1,11 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -16,33 +19,36 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import java.awt.Font;
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
-import javax.swing.UIManager;
+import javax.swing.JScrollPane;
 
-public class Fenetre {
+public class Fenetre implements Observer {
 
+	public static final String FILE_LOADED = "FILE_LOADED";
+	
 	private JFrame frame;
-	private JTable table;
 	private JTextField txtDelimiter;
-	private JTextField txtHeaderDelimiter;
 	private JTextField txtStringSurrounder;
 	private JTextField txtEmptyReplacer;
 	
 	private File fichier;
-	private JTable table_1;
+	private JScrollPane scrollColumnToTransform;
+	
+	private Parser parser;
+	private JTable tableColumnToTransform;
+	private JTable tableCsv;
 	
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		final Parser parser = new Parser();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Fenetre window = new Fenetre();
+					window.parser = parser;
+					parser.addObserver(window);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -75,7 +81,7 @@ public class Fenetre {
 		gbl_panel.columnWidths = new int[]{0, 0, 0};
 		gbl_panel.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0};
 		panel.setLayout(gbl_panel);
 		
 		JLabel lblPremiereEtape = new JLabel("AVANT OUVERTURE DU FICHIER :");
@@ -105,33 +111,23 @@ public class Fenetre {
 		panel.add(txtDelimiter, gbc_txtDelimiter);
 		txtDelimiter.setColumns(10);
 		
-		JCheckBox lblPremireLigne = new JCheckBox("Première ligne = en-tete");
-		lblPremireLigne.setSelected(true);
-		GridBagConstraints gbc_lblPremireLigne = new GridBagConstraints();
-		gbc_lblPremireLigne.insets = new Insets(0, 0, 5, 0);
-		gbc_lblPremireLigne.anchor = GridBagConstraints.WEST;
-		gbc_lblPremireLigne.gridwidth = 2;
-		gbc_lblPremireLigne.gridx = 0;
-		gbc_lblPremireLigne.gridy = 2;
-		panel.add(lblPremireLigne, gbc_lblPremireLigne);
+		JCheckBox chkPremireLigne = new JCheckBox("Première ligne = en-tete");
+		chkPremireLigne.setSelected(true);
+		GridBagConstraints gbc_chkPremiereLigne = new GridBagConstraints();
+		gbc_chkPremiereLigne.insets = new Insets(0, 0, 5, 0);
+		gbc_chkPremiereLigne.anchor = GridBagConstraints.WEST;
+		gbc_chkPremiereLigne.gridwidth = 2;
+		gbc_chkPremiereLigne.gridx = 0;
+		gbc_chkPremiereLigne.gridy = 2;
+		panel.add(chkPremireLigne, gbc_chkPremiereLigne);
 		
-		JLabel label = new JLabel("Délimiteur en-tête");
-		GridBagConstraints gbc_label = new GridBagConstraints();
-		gbc_label.anchor = GridBagConstraints.WEST;
-		gbc_label.insets = new Insets(0, 0, 5, 5);
-		gbc_label.gridx = 0;
-		gbc_label.gridy = 3;
-		panel.add(label, gbc_label);
-		
-		txtHeaderDelimiter = new JTextField();
-		txtHeaderDelimiter.setText(",");
-		txtHeaderDelimiter.setColumns(10);
-		GridBagConstraints gbc_txtHeaderDelimiter = new GridBagConstraints();
-		gbc_txtHeaderDelimiter.insets = new Insets(0, 0, 5, 0);
-		gbc_txtHeaderDelimiter.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtHeaderDelimiter.gridx = 1;
-		gbc_txtHeaderDelimiter.gridy = 3;
-		panel.add(txtHeaderDelimiter, gbc_txtHeaderDelimiter);
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 3;
+		panel.add(scrollPane, gbc_scrollPane);
 		
 		JLabel lblNewLabel = new JLabel("APRES OUVERTURE DU FICHIER :");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -197,29 +193,17 @@ public class Fenetre {
 		gbc_lblColonnesTransformer.gridy = 8;
 		panel.add(lblColonnesTransformer, gbc_lblColonnesTransformer);
 		
-		table_1 = new JTable();
-		table_1.setDragEnabled(true);
-		table_1.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Num Colonne", "Delimiter"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Integer.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		GridBagConstraints gbc_table_1 = new GridBagConstraints();
-		gbc_table_1.insets = new Insets(0, 0, 5, 0);
-		gbc_table_1.gridwidth = 2;
-		gbc_table_1.fill = GridBagConstraints.BOTH;
-		gbc_table_1.gridx = 0;
-		gbc_table_1.gridy = 9;
-		panel.add(table_1, gbc_table_1);
+		scrollColumnToTransform = new JScrollPane();
+		GridBagConstraints gbc_scrollColumnToTransform = new GridBagConstraints();
+		gbc_scrollColumnToTransform.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollColumnToTransform.gridwidth = 2;
+		gbc_scrollColumnToTransform.fill = GridBagConstraints.BOTH;
+		gbc_scrollColumnToTransform.gridx = 0;
+		gbc_scrollColumnToTransform.gridy = 9;
+		panel.add(scrollColumnToTransform, gbc_scrollColumnToTransform);
+		
+		tableColumnToTransform = new JTable();
+		scrollColumnToTransform.setViewportView(tableColumnToTransform);
 		
 		JButton btnAjouterUneColonne = new JButton("Ajouter une colonne");
 		btnAjouterUneColonne.addActionListener(new ActionListener() {
@@ -228,7 +212,7 @@ public class Fenetre {
 		});
 		GridBagConstraints gbc_btnAjouterUneColonne = new GridBagConstraints();
 		gbc_btnAjouterUneColonne.gridwidth = 2;
-		gbc_btnAjouterUneColonne.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAjouterUneColonne.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAjouterUneColonne.gridx = 0;
 		gbc_btnAjouterUneColonne.gridy = 10;
 		panel.add(btnAjouterUneColonne, gbc_btnAjouterUneColonne);
@@ -257,6 +241,7 @@ public class Fenetre {
 				JFileChooser chooser = new JFileChooser();
 				if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					fichier = chooser.getSelectedFile();
+					parser.loadFile(fichier, txtDelimiter.getText().charAt(0), chkPremireLigne.isSelected());
 					
 				}
 			}
@@ -273,9 +258,19 @@ public class Fenetre {
 		JButton btnAide = new JButton("Aide");
 		panel_5.add(btnAide);
 		
-		table = new JTable();
-		panel_1.add(table, BorderLayout.CENTER);
+		JScrollPane scrollCsv = new JScrollPane();
+		panel_1.add(scrollCsv, BorderLayout.CENTER);
+		
+		tableCsv = new JTable();
+		scrollCsv.setViewportView(tableCsv);
 		splitPane.setDividerLocation(200);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if(arg.equals(FILE_LOADED)) {
+			tableCsv.setModel(new CSVTableModel(parser.getCsvFile()));
+		}
 	}
 
 }
