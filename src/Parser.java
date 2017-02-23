@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,11 +21,11 @@ public class Parser extends Observable {
 
 	private int[] stringColumns = {1, 2, 7, 10, 11, 12, 15, 17, 18, 20, 21, 22};
 	private Set<String> movieGenres = new HashSet();
-	
+
 	private CSVFile csvFile;
 	private File file;
 	private boolean firstLineHeader;
-	
+
 	/**
 	 * @param args
 	 */
@@ -35,7 +36,7 @@ public class Parser extends Observable {
 			new Parser().processFile("movie_metadata");
 		}
 	}
-	
+
 	public void processFile(String name) {
 		//this.processStrings(name, ',');
 		try {
@@ -46,7 +47,7 @@ public class Parser extends Observable {
 			System.out.println("trololo");
 		}
 	}
-	
+
 	public void processStrings(String name, char separator) {
 		CSVFile file = new CSVFile(name, separator);
 		for(int j = 0; j < file.rowCount(); ++j) {
@@ -55,13 +56,13 @@ public class Parser extends Observable {
 			}
 			System.out.println();
 		}
-		
+
 	}
-	
+
 	public void createMovieGenres(String name, char separator) throws Exception {
 		CSVFile file = new CSVFile(name + ".csv", separator);
-		
-		
+
+
 		for(int i=1;i<file.rowCount();i++) {
 			String genres = file.getCell(i, Constants.INPUT_GENRES_POSITION).trim();
 			System.out.println("Movie title : " + file.getCell(i, 11));
@@ -75,24 +76,24 @@ public class Parser extends Observable {
 			String[] parts = genres.split("\\|");
 			for(int j = 0;j<parts.length;j++) {
 				if(!movieGenres.contains(parts[j]))
-					movieGenres.add(parts[j]);
+					movieGenres.add("Genre_" + parts[j].trim());
 				else
 					System.out.println(parts[j] + " skipped");
 			}
-			
+
 			//Movie genre arrays created
 			//Time to create the movie genres columns in the file
-			
+
 			System.out.println("movie genres array size : " + movieGenres.size());
 		}		
 		for (Iterator<String> iterator = movieGenres.iterator(); iterator.hasNext();) {
 			String string = iterator.next().trim();
 			System.out.println(string);
 		}
-		
+
 		recreate(name);
 	}
-	
+
 	/**
 	 * Je te laisse mettre cette fonction o� ca te va, j'ai pas trop trop regard� la structure du projet pour etre honn�te ^^"
 	 * En gros ce qu'elle fait c'est qu'elle lit le fichier, et pour chaque ligne, elle ajoute les movie genres pour le moement (tout en omettant de mettre l'ancienne valeur des genres ;)
@@ -100,10 +101,10 @@ public class Parser extends Observable {
 	 */
 	public void recreate(String name) throws Exception {
 		boolean header = true;
-		CSVReader reader = new CSVReader(new FileReader(name + ".csv"));
-		CSVWriter writer = new CSVWriter(new FileWriter(name + "_output.csv"), ',');
+		CSVReader reader = new CSVReader(new FileReader(name + ".csv"), ',');
+		CSVWriter writer = new CSVWriter(new FileWriter(name + "_output.csv"), ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER);
 		String[] entries = null;
-		
+
 		while((entries = reader.readNext()) != null) {
 			ArrayList<String> list = new ArrayList<String>(Arrays.asList(entries));
 			//locally save temp data : 
@@ -116,6 +117,7 @@ public class Parser extends Observable {
 				}
 				header = false;
 			} else {
+				
 				for(String genre : movieGenres) {
 					if(genres.contains(genre)) {
 						list.add("true");
@@ -123,23 +125,31 @@ public class Parser extends Observable {
 						list.add("false");
 					}
 				}
+				for(String s : list) {
+					try {
+						Integer.valueOf(s);
+					} catch (NumberFormatException e) {
+						StringBuilder sb = new StringBuilder();
+						sb.append("\"").append(s.trim()).append("\"");
+						list.set(list.indexOf(s), sb.toString());
+					}
+				}
 			}
 			String[] array = list.toArray(new String[0]);
-			writer.writeNext(array);
+			writer.writeNext(array, false);
 		}
 		writer.close();
 		reader.close();
 	}
-	
-	
+
+
 	public void loadFile(File file, char delimiter, boolean firstLineHeader) {
 		this.firstLineHeader = firstLineHeader;
 		this.file = file;
 		this.csvFile = new CSVFile(file.getAbsolutePath(), delimiter);
-		
+
 		setChanged();
 		notifyObservers(Fenetre.FILE_LOADED);
-		
 	}
 
 	@Override
@@ -187,7 +197,7 @@ public class Parser extends Observable {
 	public void setFirstLineHeader(boolean firstLineHeader) {
 		this.firstLineHeader = firstLineHeader;
 	}
-	
-	
+
+
 
 }
