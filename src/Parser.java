@@ -1,7 +1,9 @@
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -81,7 +85,7 @@ public class Parser extends Observable {
 			String[] parts = genres.split("\\|");
 			for(int j = 0;j<parts.length;j++) {
 				if(!movieGenres.contains(parts[j]))
-					movieGenres.add("Genre_" + parts[j].trim());
+					movieGenres.add(parts[j].trim());
 				else
 					System.out.println(parts[j] + " skipped");
 			}
@@ -106,23 +110,24 @@ public class Parser extends Observable {
 	 */
 	public void recreate(String name) throws Exception {
 		boolean header = true;
-		CSVReader reader = new CSVReader(new FileReader(name + ".csv"), ',');
+		CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream(name + ".csv"), "UTF-8"), ',');
 		CSVWriter writer = new CSVWriter(new FileWriter(name + "_output.csv"), ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER);
 		String[] entries = null;
 
+		String[] headerString;
 		while((entries = reader.readNext()) != null) {
 			ArrayList<String> list = new ArrayList<String>(Arrays.asList(entries));
 			//locally save temp data : 
 			String genres = entries[Constants.INPUT_GENRES_POSITION];
 			//Remove unused data :
-			list.remove(Constants.INPUT_GENRES_POSITION); //Remove movie genres
 			if(header) {
+				headerString = entries;
 				for(String genre : movieGenres) {
-					list.add(genre);
+					list.add("Genre_" + genre);
 				}
+//				list.add("ratio_rentabilite");
 				header = false;
 			} else {
-
 				for(String genre : movieGenres) {
 					if(genres.contains(genre)) {
 						list.add("true");
@@ -132,16 +137,19 @@ public class Parser extends Observable {
 				}
 				for(String s : list) {
 					try {
-						Integer.valueOf(s);
+						double d = Double.parseDouble(s);
+						System.out.println(d);
 					} catch (NumberFormatException e) {
 						if(!s.equals("?")) {
 							StringBuilder sb = new StringBuilder();
-							sb.append("\"").append(Tools.stripAccents(s.trim())).append("\"");
+							String accentremove = StringUtils.stripAccents(new String(s).replaceAll("[ÀÁÂÃÄÈÉÊËÍÌÎÏÙÚÛÜÒÓÔÕÖÑÇªº§³²¹àáâãäèéêëíìîïùúûüòóôõöñç]", " ")).trim();
+							sb.append("\"").append(accentremove).append("\"");
 							list.set(list.indexOf(s), sb.toString());
 						}
 					}
 				}
 			}
+			list.remove(Constants.INPUT_GENRES_POSITION); //Remove movie genres
 			String[] array = list.toArray(new String[0]);
 			writer.writeNext(array, false);
 		}
