@@ -1,15 +1,13 @@
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.Normalizer;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 
@@ -53,8 +51,82 @@ public class Parser extends Observable {
 		}
 	}
 
-	public void createArffFile(String name, char c) {
+	public void createArffFile(String name, char c) throws IOException {
+		RandomAccessFile f = new RandomAccessFile(new File(name + "_output_arff.arff"), "rws");
+		RandomAccessFile r = new RandomAccessFile(new File(name + "_output.csv"), "r");
+		f.seek(0); // to the beginning
+		String header = "@relation movies\n\n"
+				+"@attribute color STRING\n"
+				+"@attribute director_name STRING\n"
+				+"@attribute num_critic_for_reviews NUMERIC\n"
+				+"@attribute duration NUMERIC\n"
+				+"@attribute director_facebook_likes NUMERIC\n"
+				+"@attribute actor_3_facebook_likes NUMERIC\n"
+				+"@attribute actor_2_name STRING NUMERIC\n"
+				+"@attribute actor_1_facebook_likes NUMERIC\n"
+				+"@attribute gross NUMERIC\n"
+				+"@attribute actor_1_name STRING\n"
+				+"@attribute movie_title STRING\n"
+				+"@attribute num_voted_users NUMERIC\n"
+				+"@attribute cast_total_facebook_likes NUMERIC\n"
+				+"@attribute actor_3_name STRING\n"
+				+"@attribute facenumber_in_poster NUMERIC\n"
+				+"@attribute plot_keywords STRING\n"
+				+"@attribute movie_imdb_link STRING\n"
+				+"@attribute num_user_for_reviews NUMERIC\n"
+				+"@attribute language STRING\n"
+				+"@attribute country STRING\n"
+				+"@attribute content_rating STRING\n"
+				+"@attribute budget NUMERIC\n"
+				+"@attribute title_year NUMERIC\n"
+				+"@attribute actor_2_facebook_likes NUMERIC\n"
+				+"@attribute imdb_score NUMERIC\n"
+				+"@attribute aspect_ratio NUMERIC\n"
+				+"@attribute movie_facebook_likes NUMERIC\n"
+				+"@attribute Genre_Film-Noir {TRUE, FALSE}\n"
+				+"@attribute Genre_Action {TRUE, FALSE}\n"
+				+"@attribute Genre_War {TRUE, FALSE}\n"
+				+"@attribute Genre_History {TRUE, FALSE}\n"
+				+"@attribute Genre_Western {TRUE, FALSE}\n"
+				+"@attribute Genre_Documentary {TRUE, FALSE}\n"
+				+"@attribute Genre_Sport {TRUE, FALSE}\n"
+				+"@attribute Genre_Thriller {TRUE, FALSE}\n"
+				+"@attribute Genre_News {TRUE, FALSE}\n"
+				+"@attribute Genre_Biography {TRUE, FALSE}\n"
+				+"@attribute Genre_Comedy {TRUE, FALSE}\n"
+				+"@attribute Genre_Mystery {TRUE, FALSE}\n"
+				+"@attribute Genre_Musical {TRUE, FALSE}\n"
+				+"@attribute Genre_Short {TRUE, FALSE}\n"
+				+"@attribute Genre_Adventure {TRUE, FALSE}\n"
+				+"@attribute Genre_Horror {TRUE, FALSE}\n"
+				+"@attribute Genre_Romance {TRUE, FALSE}\n"
+				+"@attribute Genre_Sci-Fi {TRUE, FALSE}\n"
+				+"@attribute Genre_Drama {TRUE, FALSE}\n"
+				+"@attribute Genre_Music {TRUE, FALSE}\n"
+				+"@attribute Genre_Game-Show {TRUE, FALSE}\n"
+				+"@attribute Genre_Crime {TRUE, FALSE}\n"
+				+"@attribute Genre_Fantasy {TRUE, FALSE}\n"
+				+"@attribute Genre_Animation {TRUE, FALSE}\n"
+				+"@attribute Genre_Family {TRUE, FALSE}\n"
+				+"@attribute Genre_Reality-TV {TRUE, FALSE}\n"
+//				+"@attribute ratio_rentabilite\n"
+//				+"@attribute ratio_rentabilitee_disc\n"
+//				+"@attribute score_IMBD_disc\n\n"
+				+"@data\n";
 
+		header = header.replace("\n", "\r\n");
+		f.write(header.getBytes());
+		String s;
+		boolean h = true;
+		while((s = r.readLine()) != null) {
+			if(h) {
+				h = false;
+				continue;
+			}
+			f.write((s + "\n").replace("\n", "\r\n").getBytes());
+			System.out.println(s);
+		}
+		f.close();
 	}
 
 	public void processStrings(String name, char separator) {
@@ -126,13 +198,15 @@ public class Parser extends Observable {
 					list.add("Genre_" + genre);
 				}
 				list.add("ratio_rentabilite");
+				list.add("ratio_rentabilitee_disc");
+				list.add("score_IMBD_disc");
 				header = false;
 			} else {
 				for(String genre : movieGenres) {
 					if(genres.contains(genre)) {
-						list.add("true");
+						list.add("TRUE");
 					} else {
-						list.add("false");
+						list.add("FALSE");
 					}
 				}
 				for(String s : list) {
@@ -140,7 +214,7 @@ public class Parser extends Observable {
 						double d = Double.parseDouble(s);
 						System.out.println(d);
 					} catch (NumberFormatException e) {
-						if(!s.equals("?")) {
+						if(!s.equals("?") && !s.equals("TRUE") && !s.equals("FALSE")) {
 							StringBuilder sb = new StringBuilder();
 							String accentremove = StringUtils.stripAccents(new String(s).replaceAll("[ÀÁÂÃÄÈÉÊËÍÌÎÏÙÚÛÜÒÓÔÕÖÑÇªº§³²¹àáâãäèéêëíìîïùúûüòóôõöñç]", " ")).trim();
 							sb.append("\"").append(accentremove).append("\"");
