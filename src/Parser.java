@@ -125,7 +125,7 @@ public class Parser extends Observable {
 				for(String genre : movieGenres) {
 					list.add("Genre_" + genre);
 				}
-//				list.add("ratio_rentabilite");
+				list.add("ratio_rentabilite");
 				header = false;
 			} else {
 				for(String genre : movieGenres) {
@@ -147,6 +147,13 @@ public class Parser extends Observable {
 							list.set(list.indexOf(s), sb.toString());
 						}
 					}
+				}
+				try{
+					double gross = Double.parseDouble(list.get(8));
+					double budget = Double.parseDouble(list.get(22));
+					list.add("" + (gross / budget));
+				} catch (Exception e) {
+					list.add("?");
 				}
 			}
 			list.remove(Constants.INPUT_GENRES_POSITION); //Remove movie genres
