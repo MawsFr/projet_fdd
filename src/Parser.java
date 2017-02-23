@@ -41,11 +41,16 @@ public class Parser extends Observable {
 		//this.processStrings(name, ',');
 		try {
 			this.createMovieGenres(name, ',');
+			this.createArffFile(name, ',');
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("trololo");
 		}
+	}
+
+	public void createArffFile(String name, char c) {
+
 	}
 
 	public void processStrings(String name, char separator) {
@@ -117,7 +122,7 @@ public class Parser extends Observable {
 				}
 				header = false;
 			} else {
-				
+
 				for(String genre : movieGenres) {
 					if(genres.contains(genre)) {
 						list.add("true");
@@ -129,9 +134,11 @@ public class Parser extends Observable {
 					try {
 						Integer.valueOf(s);
 					} catch (NumberFormatException e) {
-						StringBuilder sb = new StringBuilder();
-						sb.append("\"").append(s.trim()).append("\"");
-						list.set(list.indexOf(s), sb.toString());
+						if(!s.equals("?")) {
+							StringBuilder sb = new StringBuilder();
+							sb.append("\"").append(Tools.stripAccents(s.trim())).append("\"");
+							list.set(list.indexOf(s), sb.toString());
+						}
 					}
 				}
 			}
