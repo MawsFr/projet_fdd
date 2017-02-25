@@ -109,7 +109,7 @@ public class Parser extends Observable {
 				+"@attribute Genre_Animation {TRUE, FALSE}\n"
 				+"@attribute Genre_Family {TRUE, FALSE}\n"
 				+"@attribute Genre_Reality-TV {TRUE, FALSE}\n"
-//				+"@attribute ratio_rentabilite\n"
+				+"@attribute ratio_rentabilite\n"
 //				+"@attribute ratio_rentabilitee_disc\n"
 //				+"@attribute score_IMBD_disc\n\n"
 				+"@data\n";
@@ -198,8 +198,8 @@ public class Parser extends Observable {
 					list.add("Genre_" + genre);
 				}
 				list.add("ratio_rentabilite");
-				list.add("ratio_rentabilitee_disc");
-				list.add("score_IMBD_disc");
+//				list.add("ratio_rentabilitee_disc");
+//				list.add("score_IMBD_disc");
 				header = false;
 			} else {
 				for(String genre : movieGenres) {
