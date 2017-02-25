@@ -52,8 +52,9 @@ public class Parser extends Observable {
 	}
 
 	public void createArffFile(String name, char c) throws IOException {
-		RandomAccessFile f = new RandomAccessFile(new File(name + "_output_arff.arff"), "rws");
+		RandomAccessFile f = new RandomAccessFile(new File(name + "_output_arff.arff"), "rw");
 		RandomAccessFile r = new RandomAccessFile(new File(name + "_output.csv"), "r");
+		f.setLength(0);
 		f.seek(0); // to the beginning
 		String header = "@relation movies\n\n"
 				+"@attribute color STRING\n"
