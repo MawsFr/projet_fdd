@@ -224,8 +224,8 @@ public class Parser extends Observable {
 					}
 				}
 				try{
-					double gross = Double.parseDouble(list.get(9));
-					double budget = Double.parseDouble(list.get(23));
+					double gross = Double.parseDouble(list.get(8));
+					double budget = Double.parseDouble(list.get(22));
 					list.add("" + (gross / budget));
 				} catch (Exception e) {
 					list.add("?");
