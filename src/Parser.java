@@ -109,11 +109,7 @@ public class Parser extends Observable {
 				+"@attribute Genre_Animation {TRUE, FALSE}\n"
 				+"@attribute Genre_Family {TRUE, FALSE}\n"
 				+"@attribute Genre_Reality-TV {TRUE, FALSE}\n"
-<<<<<<< HEAD
 				+"@attribute ratio_rentabilite NUMERIC\n"
-=======
-				+"@attribute ratio_rentabilite\n"
->>>>>>> refs/remotes/origin/master
 //				+"@attribute ratio_rentabilitee_disc\n"
 //				+"@attribute score_IMBD_disc\n\n"
 				+"@data\n";
