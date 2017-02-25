@@ -65,6 +65,7 @@ public class Parser extends Observable {
 				+"@attribute actor_2_name STRING NUMERIC\n"
 				+"@attribute actor_1_facebook_likes NUMERIC\n"
 				+"@attribute gross NUMERIC\n"
+				+"@attribute genres STRING\n"
 				+"@attribute actor_1_name STRING\n"
 				+"@attribute movie_title STRING\n"
 				+"@attribute num_voted_users NUMERIC\n"
@@ -223,8 +224,8 @@ public class Parser extends Observable {
 					}
 				}
 				try{
-					double gross = Double.parseDouble(list.get(8));
-					double budget = Double.parseDouble(list.get(22));
+					double gross = Double.parseDouble(list.get(9));
+					double budget = Double.parseDouble(list.get(23));
 					list.add("" + (gross / budget));
 				} catch (Exception e) {
 					list.add("?");
