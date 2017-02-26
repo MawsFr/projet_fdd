@@ -218,7 +218,7 @@ public class Parser extends Observable {
 					} catch (NumberFormatException e) {
 						if(!s.equals("?") && !s.equals("TRUE") && !s.equals("FALSE")) {
 							StringBuilder sb = new StringBuilder();
-							String accentremove = StringUtils.stripAccents(new String(s).replaceAll("[ÀÁÂÃÄÈÉÊËÍÌÎÏÙÚÛÜÒÓÔÕÖÑÇªº§³²¹àáâãäèéêëíìîïùúûüòóôõöñç]", " ")).trim().toLowerCase();
+							String accentremove = StringUtils.stripAccents(new String(s).replaceAll("[ÀÁÂÃÄÈÉÊËÍÌÎÏÙÚÛÜÒÓÔÕÖÑÇªº§³²¹àáâãäèéêëíìîïùúûüòóôõöñç]", " ")).trim().replaceAll("'", "").replaceAll(";", "").toLowerCase();
 							sb.append("\"").append(accentremove).append("\"");
 							list.set(list.indexOf(s), sb.toString());
 						}
