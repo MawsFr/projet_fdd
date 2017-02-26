@@ -185,7 +185,7 @@ public class Parser extends Observable {
 	public void recreate(String name) throws Exception {
 		boolean header = true;
 		CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream(name + ".csv"), "UTF-8"), ',');
-		CSVWriter writer = new CSVWriter(new FileWriter(name + "_output.csv"), ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER);
+		CSVWriter writer = new CSVWriter(new FileWriter(name + "_output.csv"), ';', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER);
 		String[] entries = null;
 
 		String[] headerString;
@@ -218,7 +218,7 @@ public class Parser extends Observable {
 					} catch (NumberFormatException e) {
 						if(!s.equals("?") && !s.equals("TRUE") && !s.equals("FALSE")) {
 							StringBuilder sb = new StringBuilder();
-							String accentremove = StringUtils.stripAccents(new String(s).replaceAll("[ÀÁÂÃÄÈÉÊËÍÌÎÏÙÚÛÜÒÓÔÕÖÑÇªº§³²¹àáâãäèéêëíìîïùúûüòóôõöñç]", " ")).trim().replaceAll("'", "").replaceAll(";", "").toLowerCase();
+							String accentremove = StringUtils.stripAccents(new String(s).replaceAll("[ÀÁÂÃÄÈÉÊËÍÌÎÏÙÚÛÜÒÓÔÕÖÑÇªº§³²¹àáâãäèéêëíìîïùúûüòóôõöñç]", " ")).trim().replaceAll(",", "").replaceAll("'", "").replaceAll(";", "").toLowerCase();
 							sb.append("\"").append(accentremove).append("\"");
 							list.set(list.indexOf(s), sb.toString());
 						}
