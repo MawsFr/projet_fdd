@@ -112,8 +112,8 @@ public class Parser extends Observable {
 				+"@attribute Genre_Family {TRUE, FALSE}\n"
 				+"@attribute Genre_Reality-TV {TRUE, FALSE}\n"
 				+"@attribute ratio_rentabilite NUMERIC\n"
-//				+"@attribute ratio_rentabilitee_disc NUMERIC\n"
-//				+"@attribute score_IMBD_disc NUMERIC\n\n"
+				//				+"@attribute ratio_rentabilitee_disc NUMERIC\n"
+				//				+"@attribute score_IMBD_disc NUMERIC\n\n"
 				+"@data\n";
 
 		header = header.replace("\n", "\r\n");
@@ -185,7 +185,7 @@ public class Parser extends Observable {
 	public void recreate(String name) throws Exception {
 		boolean header = true;
 		CSVReader reader = new CSVReader(new InputStreamReader(new FileInputStream(name + ".csv"), "UTF-8"), ',');
-		CSVWriter writer = new CSVWriter(new FileWriter(name + "_output.csv"), ';', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER);
+		CSVWriter writer = new CSVWriter(new FileWriter(name + "_output.csv"), ',', CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER);
 		String[] entries = null;
 
 		String[] headerString;
@@ -200,8 +200,14 @@ public class Parser extends Observable {
 					list.add("Genre_" + genre);
 				}
 				list.add("ratio_rentabilite");
-//				list.add("ratio_rentabilitee_disc");
-//				list.add("score_IMBD_disc");
+				//				list.add("ratio_rentabilitee_disc");
+				//				list.add("score_IMBD_disc");
+				for(String s : list) {
+					StringBuilder sb = new StringBuilder();
+					String accentremove = StringUtils.stripAccents(new String(s).replaceAll("[ÀÁÂÃÄÈÉÊËÍÌÎÏÙÚÛÜÒÓÔÕÖÑÇªº§³²¹àáâãäèéêëíìîïùúûüòóôõöñç]", " ")).trim().replaceAll(",", "").replaceAll("'", "").replaceAll(";", "").toLowerCase();
+					sb.append("\"").append(accentremove).append("\"");
+					list.set(list.indexOf(s), sb.toString());
+				}
 				header = false;
 			} else {
 				for(String genre : movieGenres) {
@@ -232,7 +238,7 @@ public class Parser extends Observable {
 					list.add("?");
 				}
 			}
-//			list.remove(Constants.INPUT_GENRES_POSITION); //Remove movie genres
+			//			list.remove(Constants.INPUT_GENRES_POSITION); //Remove movie genres
 			String[] array = list.toArray(new String[0]);
 			writer.writeNext(array, false);
 		}
