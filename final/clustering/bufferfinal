@@ -1,0 +1,312 @@
+=== Run information ===
+
+Scheme:       weka.clusterers.EM -I 100 -N 4 -X 5000 -max 4 -ll-cv 1.0E-6 -ll-iter 1.0E-6 -M 1.0E-6 -K 10 -num-slots 8 -S 5000
+Relation:     5_partie1_question_2
+Instances:    5043
+Attributes:   41
+              duration
+              director_facebook_likes
+              actor_3_facebook_likes
+              actor_1_facebook_likes
+              gross
+              facenumber_in_poster
+              country
+              budget
+              title_year
+              actor_2_facebook_likes
+              imdb_score
+              movie_facebook_likes
+              Genre_Film-Noir
+              Genre_Action
+              Genre_War
+              Genre_History
+              Genre_Western
+              Genre_Documentary
+              Genre_Sport
+              Genre_Thriller
+              Genre_News
+              Genre_Biography
+              Genre_Comedy
+              Genre_Mystery
+              Genre_Musical
+              Genre_Short
+              Genre_Adventure
+              Genre_Horror
+              Genre_Romance
+              Genre_Sci-Fi
+              Genre_Drama
+              Genre_Music
+              Genre_Game-Show
+              Genre_Crime
+              Genre_Fantasy
+              Genre_Animation
+              Genre_Family
+              Genre_Reality-TV
+Ignored:
+              ratio_rentabilite
+              imdb_score_disc
+              ratio_rentabilite_disc
+Test mode:    Classes to clusters evaluation on training data
+
+=== Clustering model (full training set) ===
+
+
+EM
+==
+
+Number of clusters: 4
+Number of iterations performed: 72
+
+
+                                 Cluster
+Attribute                              0              1              2              3
+                                  (0.11)         (0.35)         (0.48)         (0.06)
+======================================================================================
+duration
+  mean                           119.5743        107.247       100.7166       134.8563
+  std. dev.                       24.9919        18.0185        21.1416        50.0604
+
+director_facebook_likes
+  mean                          1726.5835       151.1109       120.7873      6282.5795
+  std. dev.                     4660.7596       206.4441       202.0788       7018.573
+
+actor_3_facebook_likes
+  mean                          2868.6564        469.121       278.0479       406.5941
+  std. dev.                     4276.2043       287.4448       236.5583       256.0937
+
+actor_1_facebook_likes
+  mean                         23520.5855      9149.0301       667.8043      6371.6871
+  std. dev.                    35419.1779      9116.2026       393.1111      7274.8893
+
+gross
+  mean                     104270262.7909  46701589.8827  29133548.7911   106747391.43
+  std. dev.                109566058.7319   44504307.107  26232963.4631 111265042.3202
+
+facenumber_in_poster
+  mean                             2.0798         1.2455         1.3504         0.9409
+  std. dev.                        3.3328         1.6265         1.8734         1.3946
+
+country
+  usa                            495.7343      1374.0184      1702.8346       243.4128
+  uk                              37.8058       181.5738       217.2466        15.3738
+  new zealand                      2.0058         4.0002         7.9983         4.9956
+  canada                           1.0745         26.985        99.6734         2.2672
+  australia                        9.0132          8.945        38.3608         2.6811
+  belgium                          1.0065         1.9944         3.9991              1
+  japan                            1.0042         3.2309        12.2156        10.5493
+  germany                         10.2365        44.6499        42.7106         3.4029
+  china                            2.0019         4.0082        24.9032         3.0867
+  france                          10.1621        51.8841          88.05         7.9038
+  new line                              1         1.0126         1.9874              1
+  mexico                                1         5.0007        13.9989         1.0004
+  spain                            3.8746         13.998        15.9953         3.1321
+  hong kong                        2.8944         5.1104        11.9948         1.0003
+  czech republic                        1          2.514         2.4859              1
+  india                            1.1674        10.6441        22.1423         4.0462
+  soviet union                          1              1              2              1
+  south korea                      1.0067         3.9933         9.9986         3.0014
+  peru                                  1              2              1              1
+  italy                            1.0023         3.8663        16.0565         6.0749
+  russia                           1.0017         1.9996        10.9987              1
+  aruba                                 1              1              2              1
+  denmark                          2.0027         4.0608         5.9364         3.0001
+  libya                                 1              1              2              1
+  ireland                          2.0039         3.9961         8.9988         1.0012
+  south africa                     3.0004         2.9971         4.9924           1.01
+  iceland                               1         1.0006         2.9994              2
+  switzerland                           1         3.9999              1              1
+  romania                               1         2.0003         3.9996         1.0001
+  west germany                          1         2.9646              1         2.0354
+  chile                                 1              1              2              1
+  netherlands                           1         1.0148         5.9829         1.0023
+  hungary                               1              2              1              2
+  panama                                1              2              1              1
+  greece                                1         2.9998              1         1.0002
+  sweden                           1.0147         1.0003          5.985              2
+  norway                           1.0001         4.9706         4.9989         1.0305
+  taiwan                                1         1.0172         2.9828              1
+  official site                         1         1.9999         1.0001              1
+  cambodia                              1         1.0005         1.9995              1
+  thailand                         1.0005         1.0275         2.9911         3.9809
+  slovakia                              1         1.0011         1.9989              1
+  bulgaria                              1              2              1              1
+  iran                                  1         2.9592         2.9992         1.0416
+  poland                                1         2.0002         4.9997         1.0001
+  georgia                               1              1              2              1
+  turkey                                1         1.0002         1.9998              1
+  nigeria                               1         1.0001         1.9999              1
+  brazil                                1         2.9996         6.9997         1.0006
+  finland                               1         1.0001         1.9999              1
+  bahamas                               1              2              1              1
+  argentina                             1              2         3.9998         1.0002
+  colombia                              1         1.0001         1.9999              1
+  israel                                1         1.0981         4.9019              1
+  egypt                                 1              1              2              1
+  kyrgyzstan                            1         1.0004         1.9996              1
+  indonesia                        1.0001         1.9996              1         1.0003
+  pakistan                              1              1              2              1
+  slovenia                              1              1              2              1
+  afghanistan                           1         1.0001         1.9999              1
+  dominican republic                    1         1.0001         1.9999              1
+  cameroon                              1         1.0005         1.9995              1
+  united arab emirates                  1              2              1              1
+  kenya                                 1              1              2              1
+  philippines                           1         1.0001         1.9999              1
+  [total]                        634.0144      1829.5382      2468.4151       371.0323
+budget
+  mean                      71006042.6701  37136563.1153  19287548.8429 157447873.7759
+  std. dev.                 61420664.9844   33094293.337  18579451.8668 772394331.4315
+
+title_year
+  mean                          2006.9082      2005.0315      2000.4928      1994.9852
+  std. dev.                          7.43         8.4763        13.9267        17.5393
+
+actor_2_facebook_likes
+  mean                         10086.9716       797.7915       415.9884       596.7982
+  std. dev.                     7903.2896       591.7436       295.1362       295.7418
+
+imdb_score
+  mean                             6.8488         6.5343         6.1667         7.3179
+  std. dev.                        0.9081         0.9747         1.2049         0.8512
+
+movie_facebook_likes
+  mean                         28348.6543     10109.7814       222.4586     11269.6979
+  std. dev.                     42226.076     15030.5862       313.4187     15927.4396
+
+Genre_Film-Noir
+  FALSE                          570.0144      1765.5382      2400.4152       305.0322
+  TRUE                                  1              1         4.9999         3.0001
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Action
+  TRUE                           196.1161       454.4409       416.4623        89.9806
+  FALSE                          374.8982      1312.0973      1988.9528       218.0517
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_War
+  FALSE                          545.4334       1690.413      2318.3802       279.7734
+  TRUE                             25.581        76.1252        87.0349        28.2589
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_History
+  FALSE                          552.3111      1696.5489      2313.8457       277.2943
+  TRUE                            18.7033        69.9893        91.5694         30.738
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Western
+  FALSE                          555.2242      1740.9368      2357.7646       296.0744
+  TRUE                            15.7902        25.6014        47.6505        11.9579
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Documentary
+  FALSE                          568.0168      1744.0495      2308.9878       304.9459
+  TRUE                             2.9976        22.4887        96.4273         3.0864
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Sport
+  FALSE                          556.5482       1699.181      2314.1495       295.1213
+  TRUE                            14.4661        67.3572        91.2656         12.911
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Thriller
+  FALSE                          397.9285      1172.4155      1826.9334       238.7226
+  TRUE                           173.0858       594.1227       578.4818        69.3097
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_News
+  FALSE                          570.0142      1764.5659      2402.4152       307.0047
+  TRUE                             1.0002         1.9723         2.9999         1.0276
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Biography
+  FALSE                           532.663      1651.3178      2294.6695       275.3497
+  TRUE                            38.3514       115.2204       110.7456        32.6826
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Comedy
+  FALSE                          392.6004      1117.4619      1436.3207        228.617
+  TRUE                            178.414       649.0763       969.0944        79.4153
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Mystery
+  FALSE                          516.8009      1563.0651      2189.8207       277.3132
+  TRUE                            54.2134       203.4731       215.5944        30.7191
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Musical
+  FALSE                          560.0322      1737.2089      2324.3496       293.4093
+  TRUE                            10.9821        29.3293        81.0655         14.623
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Short
+  FALSE                          570.0144      1765.5382      2399.4151       307.0323
+  TRUE                                  1              1              6              1
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Adventure
+  TRUE                           186.3171       319.3729       309.0665       112.2435
+  FALSE                          384.6973      1447.1653      2096.3486       195.7888
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Horror
+  FALSE                          552.4045      1549.3277      2081.3257       298.9421
+  TRUE                            18.6099       217.2105       324.0894         9.0902
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Romance
+  FALSE                          446.9011      1378.6254      1859.9677       254.5058
+  TRUE                           124.1132       387.9128       545.4475        53.5265
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Sci-Fi
+  TRUE                           107.5398       225.6551       229.0451          57.76
+  FALSE                          463.4746      1540.8831        2176.37       250.2723
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Drama
+  FALSE                          277.7085       854.6723      1167.3508       153.2685
+  TRUE                           293.3059       911.8659      1238.0643       154.7638
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Music
+  FALSE                          549.6138      1674.4457       2209.831       287.1095
+  TRUE                            21.4006        92.0925       195.5842        20.9228
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Game-Show
+  FALSE                          570.0144      1765.5312      2403.4221       307.0323
+  TRUE                                  1          1.007          1.993              1
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Crime
+  FALSE                          463.8349      1414.8019      2017.9944       261.3688
+  TRUE                           107.1795       351.7363       387.4207        46.6635
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Fantasy
+  TRUE                           101.6653        244.563        215.074        52.6977
+  FALSE                           469.349      1521.9752      2190.3412       255.3346
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Animation
+  FALSE                          536.8871      1672.0893      2329.4475        266.576
+  TRUE                            34.1272        94.4489        75.9676        41.4563
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Family
+  FALSE                          499.3551      1571.6928       2175.206       254.7461
+  TRUE                            71.6593       194.8454       230.2091        53.2862
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+Genre_Reality-TV
+  FALSE                          570.0144      1765.5312      2402.4221       307.0323
+  TRUE                                  1          1.007          2.993              1
+  [total]                        571.0144      1766.5382      2405.4151       308.0323
+
+
+Time taken to build model (full training data) : 1.95 seconds
+
+=== Model and evaluation on training set ===
+
+Clustered Instances
+
+0       561 ( 11%)
+1      1763 ( 35%)
+2      2414 ( 48%)
+3       305 (  6%)
+
+
+Log likelihood: -99.68484
+
+
+Class attribute: ratio_rentabilite_disc
+Classes to Clusters:
+
+    0    1    2    3  <-- assigned to cluster
+  150  615 1238  121 | TRES_RENTABLE
+  146  425  342   60 | PEU_RENTABLE
+  184  399  323   67 | RENTABLE
+   81  324  511   57 | PAS_RENTABLE
+
+Cluster 0 <-- RENTABLE
+Cluster 1 <-- PEU_RENTABLE
+Cluster 2 <-- TRES_RENTABLE
+Cluster 3 <-- PAS_RENTABLE
+
+Incorrectly clustered instances :	3139.0	 62.2447 %
+
